@@ -6,6 +6,11 @@ document.addEventListener('DOMContentLoaded', () =>{
 let resultado = document.getElementById("resultado"),
     search = document.getElementById("search");
 
+fetch('http://localhost:3000/getall')
+    .then(res => res.json())
+    .then(autos => console.log(autos))
+    .catch( err => console.error(err));
+
 function mostrarAuto(autos){
     autos.forEach(auto => {
         const elements = document.createElement("P");

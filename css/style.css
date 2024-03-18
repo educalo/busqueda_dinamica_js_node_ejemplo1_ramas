@@ -6,7 +6,7 @@
 }
 
 body {
-    background: url(../img/1.jpg);
+    /*background: url(../img/1.jpg);*/
     background-size: cover;
     background-attachment: fixed;
 
@@ -15,7 +15,7 @@ body {
 h1, h2  {
     padding: 30px 0;
     text-align: center;
-    color: #fff;
+    color: #000;
 }
 
 .contenedor {

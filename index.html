@@ -14,7 +14,6 @@
 
   <body>
         <h1>Buscador de Autos Usados</h1>
-
         <div class="contenedor">
             <form class="buscador" id="buscador">
                 <input type="search" name="search" placeholder="Buscar por marca, modelo, año, precio, color" id="search">
@@ -23,8 +22,23 @@
             <h2>Resultados</h2>
             <div id="resultado"></div>
          </div>
-
-    <script src="js/db.js"></script>
+         <div style="text-align: center;">
+         <table class="table" border="1" style="margin:0 auto;">
+          <thead>
+             <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Marca</th>
+                <th scope="col">Modelo</th>
+                <th scope="col">Año</th>
+                <th scope="col">Precio</th>
+                <th scope="col">Color</th>
+             </tr>
+          </thead>
+          <tbody id="tabla-de-datos-body">
+          </tbody>
+       </table>
+      </div>
+    <!--<script src="js/db.js"></script> -->
     <script src="js/app.js"></script>
   </body>
 

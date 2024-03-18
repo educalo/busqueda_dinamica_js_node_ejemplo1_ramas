@@ -1,53 +1,92 @@
-document.addEventListener('DOMContentLoaded', () =>{
-    mostrarAuto(autos);
-    buscarAutos();
+document.addEventListener('DOMContentLoaded', () => {
+    obtenerDatos(autos);
 });
 
-let resultado = document.getElementById("resultado"),
-    search = document.getElementById("search");
+let autos = []; // Definir autos como una variable global para que esté disponible en toda la aplicación
 
-fetch('http://localhost:3000/getall')
-    .then(res => res.json())
-    .then(autos => console.log(autos))
-    .catch( err => console.error(err));
-
-function mostrarAuto(autos){
-    autos.forEach(auto => {
-        const elements = document.createElement("P");
-        elements.innerHTML = `Marca: <strong>${auto.marca}</strong> - Modelo: <strong>${auto.modelo}</strong> - Año: <strong>${auto.year}</strong> - Precio: <strong>${auto.precio}</strong> - Color: <strong>${auto.color}</strong>`;
-        resultado.appendChild(elements);
-    });  
+function obtenerDatos() {
+    fetch('http://localhost:3000/getall')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la solicitud HTTP');
+            }
+            return response.json();
+        })
+        .then(data => {
+            autos = data; // Almacenar los datos en la variable global autos
+            mostrarAuto(autos);
+            buscarAutos(autos);
+        })
+        .catch(error => {
+            console.error('Hubo un problema con la solicitud fetch:', error);
+        });
 }
 
-function buscarAutos(){
-    search.addEventListener("input", e=>{
+//recorrido de todos los datos devueltos por el array
+//meterlo en una tabla??????????????
+function mostrarAuto(autos) {
+    limpiarHTML();
+    let tablaHTML='';
+    const tablaBody =document.getElementById("tabla-de-datos-body")
+    
+    //1º Método con forEach
+    /*autos.forEach(auto => {
+        tablaHTML += `<tr>
+            <td>${auto.id}</td>
+            <td>${auto.marca}</td>
+            <td>${auto.modelo}</td>
+            <td>${auto.ano}</td>
+            <td>${auto.precio}</td>
+            <td>${auto.color}</td>
+        </tr>`;
+          
+    });
+    */
+    //2º Metodo con map
+    //join para añadirlo todo en una cadena lo que devuelve el map
+    tablaHTML = autos.map(auto => {
+        return `<tr>
+                    <td>${auto.id}</td>
+                    <td>${auto.marca}</td>
+                    <td>${auto.modelo}</td>
+                    <td>${auto.ano}</td>
+                    <td>${auto.precio}</td>
+                    <td>${auto.color}</td>
+                </tr>`;
+    }).join('');
+
+    tablaBody.innerHTML = tablaHTML;
+}
+
+function buscarAutos(autos) {
+    search.addEventListener("input", e => {
         limpiarHTML();
         const inputText = e.target.value.toUpperCase().trim();
-        
-        const mostrarFiltrado = autos.filter(auto => 
-            auto.marca.toUpperCase().startsWith(inputText) || 
+
+        const mostrarFiltrado = autos.filter(auto =>
+            auto.marca.toUpperCase().startsWith(inputText) ||
             auto.modelo.toUpperCase().startsWith(inputText) ||
-            auto.year.toString().startsWith(inputText) ||
+            auto.ano.toString().startsWith(inputText) ||
             auto.precio.toString().startsWith(inputText) ||
-            auto.color.toUpperCase().startsWith(inputText) 
+            auto.color.toUpperCase().startsWith(inputText)
         );
 
         if (mostrarFiltrado.length === 0) {
             noResultado();
         }
-        
+
         mostrarAuto(mostrarFiltrado);
     });
 }
 
-function limpiarHTML(){
-    while (resultado.firstChild){
+function limpiarHTML() {
+    while (resultado.firstChild) {
         resultado.removeChild(resultado.firstChild);
     }
 }
 
-function noResultado(){
+function noResultado() {
     const noResultadoElement = document.createElement("DIV");
     noResultadoElement.textContent = "No hay resultados de búsqueda";
-    resultado.appendChild(noResultadoElement);    
+    resultado.appendChild(noResultadoElement);
 }

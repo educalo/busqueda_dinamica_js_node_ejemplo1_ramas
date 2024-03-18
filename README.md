@@ -1,1 +1,1 @@
-Modificarlo para añadir mysql y tabla para mostrar la búsqueda
+Modificado para el uso de mysql y tabla para mostrar la búsqueda
